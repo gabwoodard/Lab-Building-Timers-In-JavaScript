@@ -1,22 +1,23 @@
-/**
- * Function: countdownTimer
- * Description: Creates a countdown timer that logs the remaining time at regular intervals and stops at 0.
- *
- * Steps:
- * 1. Accept two parameters: `startTime` (in seconds) and `interval` (in milliseconds).
- * 2. Use `setInterval` to decrement the time and log the remaining time.
- * 3. Stop the timer using `clearInterval` when the remaining time reaches 0.
- * 4. Return the timer ID so it can be used for test validation.
- *
- * Example Usage:
- * countdownTimer(10, 1000); // Logs remaining time every second for 10 seconds.
- */
-function countdownTimer(startTime, interval) {
-  // Initialize the remaining time
-  // Set up a timer using setInterval
-  // Log the remaining time and decrement it
-  // Stop the timer when time reaches 0
-  // Return the timer ID for validation
+// Logs the remaining seconds every tick and stops at 0.
+// Returns the interval id so tests (or callers) can clear/inspect it.
+function countdownTimer(seconds, intervalMs = 1000, logger = console.log) {
+  if (typeof seconds !== 'number' || seconds < 0) {
+    throw new Error('seconds must be a non-negative number');
+  }
+
+  let remaining = Math.floor(seconds);
+
+  const id = setInterval(() => {
+    logger(remaining);
+
+    if (remaining === 0) {
+      clearInterval(id);
+      return;
+    }
+    remaining -= 1;
+  }, intervalMs);
+
+  return id;
 }
 
 module.exports = { countdownTimer };
